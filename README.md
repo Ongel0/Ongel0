@@ -1,68 +1,105 @@
-mi-app-3d
-│
-├── index.html
-├── style.css
-└── main.js
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Multijugador 3D</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="container"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="main.js"></script>
-</body>
-</html>
-body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { motion } from "framer-motion";
+
+// Versión avanzada del prototipo
+// Concepto: plataforma que analiza ideas, genera modelos de negocio
+// y propone automatizaciones con IA para emprendedores.
+
+export default function AutoNegocioAI() {
+  const [idea, setIdea] = useState("");
+  const [analysis, setAnalysis] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  async function analyzeIdea() {
+    if (!idea) return;
+
+    setLoading(true);
+
+    // Simulación de respuesta IA
+    const simulatedResponse = {
+      demand: "Alta",
+      trend: "Economía de automatización y micro‑SaaS",
+      problem:
+        "Millones de pequeños negocios siguen gestionando clientes, pedidos e inventario manualmente.",
+      opportunity:
+        "Crear herramientas simples conectadas a WhatsApp para gestionar pedidos automáticamente.",
+      monetization:
+        "Modelo SaaS por suscripción mensual entre 5 y 20 USD.",
+      controversialEdge:
+        "Usar IA para crear micro‑negocios automatizados que operen casi sin intervención humana."
+    };
+
+    setTimeout(() => {
+      setAnalysis(simulatedResponse);
+      setLoading(false);
+    }, 1200);
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-200 p-6 grid gap-6">
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-4xl font-bold"
+      >
+        AutoNegocio AI
+      </motion.h1>
+
+      <Card className="rounded-2xl shadow-xl">
+        <CardContent className="p-6 grid gap-4">
+          <p className="text-lg">
+            Plataforma experimental para analizar ideas de negocio y crear
+            sistemas automáticos de emprendimiento usando inteligencia
+            artificial.
+          </p>
+
+          <Textarea
+            placeholder="Describe un problema o idea de negocio..."
+            value={idea}
+            onChange={(e) => setIdea(e.target.value)}
+          />
+
+          <Button onClick={analyzeIdea}>
+            {loading ? "Analizando con IA..." : "Analizar idea"}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {analysis && (
+        <Card className="rounded-2xl shadow-xl">
+          <CardContent className="p-6 grid gap-3">
+            <h2 className="text-2xl font-semibold">Análisis estratégico</h2>
+
+            <p>
+              <strong>Demanda del mercado:</strong> {analysis.demand}
+            </p>
+
+            <p>
+              <strong>Tendencia tecnológica:</strong> {analysis.trend}
+            </p>
+
+            <p>
+              <strong>Problema detectado:</strong> {analysis.problem}
+            </p>
+
+            <p>
+              <strong>Oportunidad:</strong> {analysis.opportunity}
+            </p>
+
+            <p>
+              <strong>Modelo de ingresos:</strong> {analysis.monetization}
+            </p>
+
+            <p>
+              <strong>Elemento disruptivo:</strong> {analysis.controversialEdge}
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
 }
-
-#container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #000;
-}
-// Configuración básica de la escena, cámara y renderizador
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById('container').appendChild(renderer.domElement);
-
-// Añadiendo un cubo a la escena
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-
-camera.position.z = 5;
-
-// Animación del cubo
-function animate() {
-    requestAnimationFrame(animate);
-
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-
-    renderer.render(scene, camera);
-}
-
-animate();
-
-// Ajuste de la ventana para mantener el aspecto correcto
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
